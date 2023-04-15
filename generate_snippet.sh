@@ -1,0 +1,1 @@
+./script --root_path ./archive --output_file_name cpp.json
