@@ -1,6 +1,6 @@
 // @title segtree for max or min values
 // @description dynamic-nodes segtree for max or min values
-// @prefix segpeek
+// @prefix segtree_max segtree_min
 template <class T, decltype(auto) MinOrMax, ll def>
 struct SegTree {
     SegTree(ll l, ll r, size_t siz)
@@ -43,5 +43,4 @@ struct SegTree {
         return res(res, head, lm, rm);
     }
 };
-//ll maxx(ll a, ll b) { return max(a, b); };
-//SegTree<ll, &maxx, INT_MIN> seg1(1, 1e18, log(n)*n);
+//SegTree<ll, [](ll a,ll b){return ${1|max,min|}(a,b);}, INT_MIN> seg1(1, 1e18, log(n)*n);

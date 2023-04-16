@@ -1,6 +1,6 @@
 // @title qwq
 // @description: bib
-// @prefix: okkk
+// @prefix: okkk qwq
 
 #include <bits/stdc++.h>
 
@@ -21,7 +21,7 @@ json global_config = {
 unordered_map<string, regex> rules;
 template <typename... T>
 constexpr void AddRule(T &&...arg) {
-    ((rules[arg] = regex("[^\\n]*@" + arg + " *([^#]*)")), ...);
+    ((rules[arg] = regex("[^\\n]*@" + arg + "[: ]*([^#]*)")), ...);
 }
 class File {
     json para;
@@ -37,11 +37,19 @@ class File {
             smatch m;
             for (auto [key_word, rule] : rules) {
                 if (auto res = regex_match(line, m, rule); res) {
-                cout<<line<<" "<<key_word<<endl;
                     if (para.contains(key_word))
                         throw duplicated_argument(path.c_str(),
                                                   key_word.c_str());
-                    para[key_word] = m[1].str();
+
+                    if (key_word == "prefix") {
+                        stringstream ss(m[1].str());
+                        string s;
+                        while (ss >> s) {
+                            para[key_word].push_back(move(s));
+                        }
+                    } else {
+                        para[key_word] = m[1].str();
+                    }
                     return 1;
                 }
             }
@@ -62,7 +70,11 @@ class File {
         check_para();
         in.close();
     }
-    const string GetPara(const string &name) { return para[name]; }
+    const string GetPara(const string &name) {
+        string s;
+        for (auto &c : para[name]) s += c;
+        return move(s);
+    }
     const json &AsJson() {
         para["body"] = json(body);
         return para;
@@ -99,12 +111,12 @@ int main(int, char *argv[]) {
     AddRule<string>("title"s, "description"s, "prefix"s);
     argh::parser parser(argv, argh::parser::PREFER_PARAM_FOR_UNREG_OPTION);
 
-    cout<<"Config >>>>>>>>>>>>>>>>"<<endl;
+    cout << "Config >>>>>>>>>>>>>>>>" << endl;
     for (auto &[config, val] : global_config.items()) {
         if (parser(config)) val = parser(config).str();
         cout << config << " = " << val << endl;
     }
-    cout<<"<<<<<<<<<<<<<<<<<<<<<<<"<<endl;
+    cout << "<<<<<<<<<<<<<<<<<<<<<<<" << endl;
     scan_files(global_config["root_path"]);
     output_file();
     return 0;

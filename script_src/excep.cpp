@@ -32,4 +32,3 @@ class argument_miss : public exception {
         return res;
     }
 };
-seg
