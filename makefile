@@ -6,4 +6,4 @@ script: ./script_src/main.cpp ./script_src/excep.cpp
 make: script
 
 run: script
-	./script
+	./script -root_path ./script_src

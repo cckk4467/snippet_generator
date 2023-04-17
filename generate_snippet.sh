@@ -1,1 +1,1 @@
-./script --root_path ./archive --output_file_name cpp.json
+./script --root_path ./archive --output_file_name ~/.config/Code/User/snippets/cpp.json

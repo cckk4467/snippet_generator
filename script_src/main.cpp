@@ -1,6 +1,6 @@
-// @title qwq
+// @title main.cpp
 // @description: bib
-// @prefix: okkk qwq
+// @prefix: main gg
 
 #include <bits/stdc++.h>
 
@@ -23,6 +23,7 @@ template <typename... T>
 constexpr void AddRule(T &&...arg) {
     ((rules[arg] = regex("[^\\n]*@" + arg + "[: ]*([^#]*)")), ...);
 }
+const auto commentary_regex = regex("//.*");
 class File {
     json para;
     string path;
@@ -56,6 +57,11 @@ class File {
             return 0;
         };
 
+        auto match_commentary = [&](const string &line) {
+            smatch m;
+            return regex_search(line, m, commentary_regex);
+        };
+
         auto check_para = [&]() {
             for (auto [key_word, rule] : rules) {
                 if (!para.contains(key_word))
@@ -65,7 +71,9 @@ class File {
 
         string line;
         while (getline(in, line)) {
-            if (!match_rule(line)) body.push_back(line);
+            if (!match_rule(line) && !match_commentary(line)) {
+                body.push_back(line);
+            }
         }
         check_para();
         in.close();
