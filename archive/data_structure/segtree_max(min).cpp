@@ -57,4 +57,4 @@ struct SegTree {
 };
 
 auto Max = [](auto a, auto b) { return (a > b) ? a : b; };
-SegTree<pint, Max, long long> seg(0, 1000000, INT_MIN);
+SegTree<int, Max, long long> seg(0, 1000000, INT_MIN);
