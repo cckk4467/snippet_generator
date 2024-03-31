@@ -101,7 +101,7 @@ auto scan_files(const string &path) -> void {
         else if (auto file = entry.path();
                  file.has_extension() &&
                  file.extension().string() ==
-                     global_config["target_extension"]) {
+                     string(global_config["target_extension"])) {
             handle(entry.path().string());
         }
         // cout << entry.path().string() << endl;
